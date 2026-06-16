@@ -22,7 +22,13 @@ export default function Home() {
   const [companyId, setCompanyId] = useState(DEFAULT_COMPANY_ID);
   const [thread, setThread] = useState<ThreadItem[]>([]);
   const [leadOpen, setLeadOpen] = useState(false);
+  const [leadSource, setLeadSource] = useState<string>("header");
   const [softPromptDismissed, setSoftPromptDismissed] = useState(false);
+
+  const openLead = useCallback((source: string) => {
+    setLeadSource(source);
+    setLeadOpen(true);
+  }, []);
 
   const company = getCompany(companyId);
   const groups = getQuestionGroups(companyId);
@@ -83,7 +89,7 @@ export default function Home() {
 
   return (
     <div className="min-h-full">
-      <Header onOpenLead={() => setLeadOpen(true)} />
+      <Header onOpenLead={() => openLead("header")} />
 
       <main className="mx-auto max-w-3xl px-5 pb-28 pt-10 sm:px-8">
         {/* Hero */}
@@ -144,7 +150,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
-                  <Button onClick={() => setLeadOpen(true)}>
+                  <Button onClick={() => openLead("soft_prompt")}>
                     Run it on your own numbers
                     <ArrowRight className="h-4 w-4" />
                   </Button>
@@ -169,7 +175,13 @@ export default function Home() {
         </p>
       </main>
 
-      <LeadModal open={leadOpen} onClose={() => setLeadOpen(false)} />
+      <LeadModal
+        open={leadOpen}
+        onClose={() => setLeadOpen(false)}
+        companyViewed={company.name}
+        sampleQuestionsAsked={thread.map((t) => t.question)}
+        source={leadSource}
+      />
     </div>
   );
 }
