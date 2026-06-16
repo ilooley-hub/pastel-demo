@@ -1,26 +1,212 @@
 @import "tailwindcss";
 
+/*
+  Pastel UI Kit design system
+  - Display: Fraunces (--font-fraunces), heavy + italic gradient-clip accents
+  - UI/body: Hanken Grotesk (--font-hanken)
+  - Mono: JetBrains Mono (--font-jetbrains)
+  - Warm cream canvas, ink text, indigo accent, pastel gradient signature.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --background: #f4f2eb; /* warm cream canvas */
+  --bg-tint: #eeebe0;
+  --foreground: #17161c; /* ink */
+  --card: #fbfaf6; /* surface */
+  --card-foreground: #17161c;
+  --surface-2: #ffffff;
+
+  /* Ink scale */
+  --ink-2: #44424e;
+  --ink-3: #84826f;
+  --ink-4: #b0ad9b;
+
+  --muted: #eeebe0;
+  --muted-foreground: #84826f;
+
+  /* Borders (warm tan) */
+  --border: #dcd7c7;
+  --border-subtle: #e7e3d6;
+  --border-strong: #cbc5b2;
+  --input: #dcd7c7;
+
+  /* Accent (indigo) */
+  --accent: #6e62c8;
+  --accent-hover: #5c50b6;
+  --accent-foreground: #ffffff;
+  --accent-soft: rgba(110, 98, 200, 0.1);
+  --accent-strong: #6e62c8;
+  --ring: rgba(110, 98, 200, 0.22);
+
+  /* Status */
+  --positive: #2f8a63;
+  --positive-bg: rgba(47, 138, 99, 0.1);
+  --positive-border: rgba(47, 138, 99, 0.26);
+  --warning: #b07d24;
+  --warning-bg: rgba(176, 125, 36, 0.12);
+  --warning-border: rgba(176, 125, 36, 0.28);
+  --danger: #c8453c;
+  --danger-bg: rgba(200, 69, 60, 0.1);
+  --danger-border: rgba(200, 69, 60, 0.28);
+
+  /* Pastels (for charts/accents) */
+  --p-blue: #7fc0e8;
+  --p-periwinkle: #8fa8ec;
+  --p-lavender: #b69bd9;
+  --p-pink: #dca7c5;
+  --p-peach: #f4c9a1;
+
+  /* Signature gradient */
+  --grad: linear-gradient(95deg, #7fc0e8 0%, #8fa8ec 26%, #b69bd9 52%, #dca7c5 76%, #f4c9a1 100%);
+  --grad-soft: linear-gradient(95deg, #b9dcf1 0%, #bfc6f2 26%, #d5c5ec 52%, #edcbe0 76%, #f8dec4 100%);
+  --glow-grad: 0 8px 30px rgba(150, 140, 210, 0.32);
+
+  /* Shadows (warm) */
+  --shadow-sm: 0 1px 2px rgba(40, 38, 28, 0.06);
+  --shadow-md: 0 8px 24px rgba(40, 38, 28, 0.08), 0 1px 2px rgba(40, 38, 28, 0.05);
+  --shadow-lg: 0 24px 60px rgba(40, 38, 28, 0.13), 0 2px 6px rgba(40, 38, 28, 0.06);
+
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-bg-tint: var(--bg-tint);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-surface-2: var(--surface-2);
+
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-strong: var(--accent-strong);
+  --color-ring: var(--ring);
+
+  --color-positive: var(--positive);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --color-p-blue: var(--p-blue);
+  --color-p-periwinkle: var(--p-periwinkle);
+  --color-p-lavender: var(--p-lavender);
+  --color-p-pink: var(--p-pink);
+  --color-p-peach: var(--p-peach);
+
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-card: 14px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* Display headings — Fraunces, heavy, tight. */
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 144;
+  letter-spacing: -0.02em;
+}
+
+/* Signature: italic accent words with the pastel gradient clipped to text. */
+.display-accent {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 144;
+  letter-spacing: -0.01em;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Pastel gradient fills (primary button, marks, rules). */
+.bg-grad {
+  background: var(--grad);
+}
+.bg-grad-soft {
+  background: var(--grad-soft);
+}
+.gradient-rule {
+  height: 2px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--grad);
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.eyebrow {
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.shadow-soft-sm {
+  box-shadow: var(--shadow-sm);
+}
+.shadow-soft-md {
+  box-shadow: var(--shadow-md);
+}
+.shadow-soft-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Thin, on-brand scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ddd8c8;
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cbc5b2;
+  background-clip: content-box;
+}
+
+@keyframes thinking-pulse {
+  0%, 100% { opacity: 0.35; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
 }
