@@ -31,6 +31,36 @@ const ANSWER_SCHEMA = {
         required: ["label", "period", "value"],
       },
     },
+    sources_used: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        properties: {
+          name: { type: "string" },
+          type: { type: "string", enum: ["spreadsheet", "document"] },
+          used_for: { type: "string" },
+        },
+        required: ["name", "type", "used_for"],
+      },
+    },
+    agent: {
+      anyOf: [
+        {
+          type: "object",
+          additionalProperties: false,
+          properties: {
+            name: { type: "string" },
+            frequency: { type: "string" },
+            watches: { type: "string" },
+            condition: { type: "string" },
+            route_to: { type: "string" },
+          },
+          required: ["name", "frequency", "watches", "condition", "route_to"],
+        },
+        { type: "null" },
+      ],
+    },
     chart: {
       anyOf: [
         {
@@ -70,7 +100,15 @@ const ANSWER_SCHEMA = {
       ],
     },
   },
-  required: ["answer", "headline_number", "drivers", "source_rows", "chart"],
+  required: [
+    "answer",
+    "headline_number",
+    "drivers",
+    "source_rows",
+    "sources_used",
+    "chart",
+    "agent",
+  ],
 } as const;
 
 function textFromMessage(message: Anthropic.Message): string | null {

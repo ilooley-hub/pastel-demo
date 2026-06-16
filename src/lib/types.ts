@@ -27,13 +27,42 @@ export type ChartSpec = {
   unit?: string;
 };
 
+/** A source file the answer drew on (an Excel/CSV spreadsheet or a PDF/doc). */
+export type SourceFileRef = {
+  name: string;
+  type: "spreadsheet" | "document";
+  /** Short note on what was taken from this file. */
+  used_for: string;
+};
+
+/**
+ * A proposed monitoring agent — the "set it once, run it on every new data sync,
+ * route issues to the right person" concept. Populated for monitoring/assurance
+ * questions; null otherwise.
+ */
+export type AgentSpec = {
+  name: string;
+  /** When it runs, e.g. "Every month, on each new data sync". */
+  frequency: string;
+  /** What it watches. */
+  watches: string;
+  /** The trigger condition that constitutes an issue. */
+  condition: string;
+  /** Who the flag is routed to (a named person/role from the data). */
+  route_to: string;
+};
+
 /** The structured answer returned by the query engine (see PRD appendix). */
 export type AnswerPayload = {
   answer: string;
   headline_number: string | null;
   drivers: string;
   source_rows: SourceRow[];
+  /** The files (Excels + documents) this answer was built from. */
+  sources_used: SourceFileRef[];
   chart: ChartSpec | null;
+  /** A monitoring agent this answer could become, or null. */
+  agent: AgentSpec | null;
 };
 
 export type ThreadStatus = "thinking" | "done" | "error";

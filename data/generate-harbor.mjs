@@ -187,6 +187,59 @@ const expense_categories = [
   cat("Software & tools", first.opex_software, last.opex_software),
 ].sort((a, b) => b.dec_2025 - a.dec_2025);
 
+// ---- Source files: the Excels + documents the figures come from ------------
+const source_files = [
+  { id: "mgmt-accounts", name: "Management accounts — 2024-2025.xlsx", type: "spreadsheet", system: "Xero", updated: "2025-12", description: "Monthly P&L, balance sheet and cash." },
+  { id: "shopify", name: "Shopify sales export — 2025.xlsx", type: "spreadsheet", system: "Shopify", updated: "2025-12", description: "Orders, revenue and refunds by month." },
+  { id: "inventory", name: "Inventory valuation — Dec 2025.xlsx", type: "spreadsheet", system: "3PL / internal", updated: "2025-12", description: "Stock on hand and inventory value." },
+  { id: "ap-ledger", name: "AP ledger — Dec 2025.xlsx", type: "spreadsheet", system: "Xero", updated: "2025-12", description: "Supplier payables and ageing." },
+  { id: "purchase-invoices", name: "Purchase invoices — Q4 2025.xlsx", type: "spreadsheet", system: "Xero", updated: "2025-12", description: "Supplier invoices and unit prices charged." },
+  { id: "payroll", name: "Payroll summary — 2025.xlsx", type: "spreadsheet", system: "Gusto", updated: "2025-12", description: "Headcount and staff cost." },
+  { id: "bank", name: "Bank statements — 2025.pdf", type: "document", system: "Bank", updated: "2025-12", description: "Cash movements and balances." },
+  { id: "lin-pricelist", name: "Lin Textiles — price list 2025.pdf", type: "document", system: "Supplier", updated: "2025-01", description: "Agreed 2025 unit pricing for core supplier." },
+  { id: "packaging-pricelist", name: "Packaging Co — price list.pdf", type: "document", system: "Supplier", updated: "2025-01", description: "Agreed packaging unit pricing." },
+  { id: "3pl-agreement", name: "Meridian 3PL — fulfilment agreement.pdf", type: "document", system: "DocuSign", updated: "2024-11", description: "Fulfilment rates and SLAs." },
+];
+
+// ---- Team (so agent flags route to the right person) -----------------------
+const team = [
+  { name: "Jordan Ellis", role: "Operations Lead" },
+  { name: "Sofia Marsh", role: "Finance Lead" },
+  { name: "Alex Kim", role: "Founder / Brand" },
+];
+
+// ---- Cost assurance: supplier invoices vs agreed price lists ---------------
+// Combines documents (supplier price lists) with spreadsheets (purchase
+// invoices). Engineered so one core supplier has been over-charging.
+const cost_assurance = {
+  summary:
+    "Supplier invoices (AP) checked against the agreed supplier price lists. One core supplier has been charging above the agreed 2025 rate.",
+  total_overcharge: 6840,
+  items: [
+    {
+      supplier: "Lin Textiles",
+      contract_file: "Lin Textiles — price list 2025.pdf",
+      invoice_file: "Purchase invoices — Q4 2025.xlsx",
+      agreed_unit_price: "£4.20/unit",
+      invoiced_unit_price: "£4.65/unit",
+      units_q4: 15200,
+      overcharge: 6840,
+      status: "OVER-CHARGED",
+      issue: "Q4 invoices billed £0.45/unit above the agreed 2025 price list across 3 POs (15,200 units).",
+    },
+    {
+      supplier: "Packaging Co",
+      contract_file: "Packaging Co — price list.pdf",
+      invoice_file: "Purchase invoices — Q4 2025.xlsx",
+      agreed_unit_price: "£0.38/unit",
+      invoiced_unit_price: "£0.38/unit",
+      overcharge: 0,
+      status: "OK",
+      issue: "Invoices match the price list — no action needed.",
+    },
+  ],
+};
+
 // ---- Assemble --------------------------------------------------------------
 const dataset = {
   meta: {
@@ -232,6 +285,9 @@ const dataset = {
   accounts_receivable: ar,
   headcount,
   expense_categories,
+  cost_assurance,
+  team,
+  source_files,
 };
 
 const out = join(__dirname, "harbor.json");

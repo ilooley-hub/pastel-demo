@@ -243,6 +243,87 @@ const expense_categories = [
   cat("Customer support", first.cogs_support, last.cogs_support),
 ].sort((a, b) => b.dec_2025 - a.dec_2025);
 
+// ---- Source files: the Excels + documents the figures come from ------------
+const source_files = [
+  { id: "mgmt-accounts", name: "Management accounts — 2024-2025.xlsx", type: "spreadsheet", system: "Xero", updated: "2025-12", description: "Monthly P&L, balance sheet and cash." },
+  { id: "stripe", name: "Stripe billing export — 2025.xlsx", type: "spreadsheet", system: "Stripe", updated: "2025-12", description: "Invoices, MRR movements and plan changes." },
+  { id: "api-usage", name: "API usage log — 2025.xlsx", type: "spreadsheet", system: "Internal", updated: "2025-12", description: "Per-customer API call volumes (usage-based billing)." },
+  { id: "ar-aging", name: "AR aging — Dec 2025.xlsx", type: "spreadsheet", system: "Xero", updated: "2025-12", description: "Receivables by customer and age bucket." },
+  { id: "ap-ledger", name: "AP ledger — Dec 2025.xlsx", type: "spreadsheet", system: "Xero", updated: "2025-12", description: "Supplier payables." },
+  { id: "payroll", name: "Payroll summary — 2025.xlsx", type: "spreadsheet", system: "Gusto", updated: "2025-12", description: "Headcount and fully-loaded staff cost." },
+  { id: "budget", name: "2025 budget.xlsx", type: "spreadsheet", system: "Internal", updated: "2025-01", description: "Board-approved 2025 plan (budget vs actual)." },
+  { id: "bank", name: "Bank statements — 2025.pdf", type: "document", system: "Bank", updated: "2025-12", description: "Cash movements and closing balances." },
+  { id: "northwind-msa", name: "Northwind Trading — MSA (signed).pdf", type: "document", system: "DocuSign", updated: "2024-02", description: "Master services agreement: pricing and 7% annual uplift clause." },
+  { id: "atlas-of", name: "Atlas Retail — Order Form.pdf", type: "document", system: "DocuSign", updated: "2024-06", description: "Order form: base fee plus usage-based overage terms." },
+  { id: "beacon-msa", name: "Beacon Health — MSA.pdf", type: "document", system: "DocuSign", updated: "2024-09", description: "Master services agreement and CPI uplift clause." },
+  { id: "board-deck", name: "Board deck — Q4 2025.pdf", type: "document", system: "Internal", updated: "2025-12", description: "Quarterly board narrative and KPIs." },
+  { id: "headcount-plan", name: "Headcount plan — 2025.xlsx", type: "spreadsheet", system: "Internal", updated: "2025-12", description: "Open roles and hiring plan." },
+  { id: "cap-table", name: "Cap table.xlsx", type: "spreadsheet", system: "Internal", updated: "2025-12", description: "Ownership and option pool." },
+];
+
+// ---- Team & account owners (so agent flags route to the right person) -------
+const team = [
+  { name: "Maya Chen", role: "Head of Sales" },
+  { name: "Tom Reilly", role: "Account Manager, Enterprise" },
+  { name: "Priya Anand", role: "FP&A / Finance Lead" },
+];
+const account_owners = {
+  "Northwind Trading": "Tom Reilly",
+  "Atlas Retail Group": "Tom Reilly",
+  "Beacon Health": "Maya Chen",
+  "Cedar Financial": "Maya Chen",
+  "Pinnacle Media": "Tom Reilly",
+};
+
+// ---- Revenue assurance: signed contracts vs actual billing -----------------
+// Combines documents (DocuSign contracts) with spreadsheets (Stripe billing,
+// API usage). Engineered so two of three sampled accounts are under-billed.
+const revenue_assurance = {
+  summary:
+    "Signed customer contracts (DocuSign) checked against the actual Stripe billing export and API usage log. Two of three sampled accounts are billed below their contract.",
+  annualized_gap: 28716,
+  backdated_to_invoice: 5400,
+  items: [
+    {
+      customer: "Northwind Trading",
+      contract_file: "Northwind Trading — MSA (signed).pdf",
+      billing_file: "Stripe billing export — 2025.xlsx",
+      contract_terms: "£21,330/mo base, +7% annual uplift effective 1 January",
+      contracted_monthly: 22823,
+      billed_monthly: 21330,
+      gap_monthly: 1493,
+      gap_annual: 17916,
+      status: "UNDER-BILLED",
+      issue: "The 2025 contractual 7% uplift was never applied in billing.",
+    },
+    {
+      customer: "Atlas Retail Group",
+      contract_file: "Atlas Retail — Order Form.pdf",
+      billing_file: "API usage log — 2025.xlsx",
+      contract_terms: "£8,000/mo incl. 50,000 API calls; overage at £0.02/call",
+      usage_avg_calls: 95000,
+      overage_calls: 45000,
+      gap_monthly: 900,
+      gap_annual: 10800,
+      backdated_unbilled: 5400,
+      status: "UNDER-BILLED",
+      issue: "Usage overage (avg 95k calls vs 50k included) never invoiced since Jul 2025.",
+    },
+    {
+      customer: "Beacon Health",
+      contract_file: "Beacon Health — MSA.pdf",
+      billing_file: "Stripe billing export — 2025.xlsx",
+      contract_terms: "£12,400/mo, CPI uplift applied correctly",
+      contracted_monthly: 12400,
+      billed_monthly: 12400,
+      gap_monthly: 0,
+      gap_annual: 0,
+      status: "OK",
+      issue: "Billing matches contract — no action needed.",
+    },
+  ],
+};
+
 // ---- Strip internal helper fields off monthly ------------------------------
 const monthlyClean = monthly.map(({ _sm_plan, ...rest }) => rest);
 
@@ -294,6 +375,10 @@ const dataset = {
   headcount,
   budget_vs_actual_2025: budget_2025,
   expense_categories,
+  revenue_assurance,
+  team,
+  account_owners,
+  source_files,
 };
 
 const out = join(__dirname, "meridian.json");

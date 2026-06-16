@@ -7,6 +7,8 @@ import type { ThreadItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Markdown } from "./Markdown";
 import { AnswerChart } from "./AnswerChart";
+import { AgentCard } from "./AgentCard";
+import { SourcesBar } from "./SourcesBar";
 
 function ThinkingDots() {
   return (
@@ -143,6 +145,10 @@ export function AnswerCard({
             {item.answer.chart && item.answer.chart.type !== "none" && (
               <AnswerChart chart={item.answer.chart} />
             )}
+
+            {item.answer.agent && <AgentCard agent={item.answer.agent} />}
+
+            <SourcesBar sources={item.answer.sources_used} />
 
             <SourceView rows={item.answer.source_rows} />
           </div>

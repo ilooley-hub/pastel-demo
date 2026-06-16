@@ -25,6 +25,7 @@ const MERIDIAN_QUESTIONS: QuestionGroup[] = [
     rung: "Analysis",
     questions: [
       "Why did gross margin drop in Q2 2025?",
+      "Compare our customer contracts to what we're billing — are we capturing all the revenue?",
       "What are our top 5 expense categories and how have they grown?",
       "How exposed are we to our biggest customers?",
     ],
@@ -64,6 +65,7 @@ const HARBOR_QUESTIONS: QuestionGroup[] = [
     rung: "Analysis",
     questions: [
       "How seasonal is our revenue across the year?",
+      "Do our supplier invoices match the agreed price list?",
       "What are our top 5 expense categories and how have they grown?",
       "How much cash is tied up in inventory?",
     ],
@@ -103,6 +105,7 @@ const VANTAGE_QUESTIONS: QuestionGroup[] = [
     rung: "Analysis",
     questions: [
       "How has team utilization trended this year?",
+      "Compare our signed SOWs to what we've billed — any unbilled scope?",
       "What are our top 5 expense categories and how have they grown?",
       "How exposed are we to our biggest clients?",
     ],

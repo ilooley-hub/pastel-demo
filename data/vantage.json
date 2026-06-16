@@ -684,5 +684,152 @@
       "dec_2025": 3800,
       "growth_pct": 58.3
     }
+  ],
+  "revenue_assurance": {
+    "summary": "Signed SOWs and rate cards (DocuSign) checked against billed invoices and timesheets. Two engagements are billed below contract.",
+    "total_unbilled": 24200,
+    "items": [
+      {
+        "client": "Brightline Bank",
+        "contract_file": "Brightline Bank — SOW + CO2 (signed).pdf",
+        "billing_file": "Billing / invoices — 2025.xlsx",
+        "contract_terms": "Change order CO-2 added £18,000 of scope, approved Oct 2025",
+        "billed": "CO-2 scope delivered but not invoiced",
+        "gap": 18000,
+        "status": "UNBILLED",
+        "issue": "Approved change-order scope (£18,000) was delivered but never invoiced."
+      },
+      {
+        "client": "Cairn Energy",
+        "contract_file": "Cairn Energy — MSA + rate card.pdf",
+        "billing_file": "Timesheets & utilization — 2025.xlsx",
+        "contract_terms": "Rate card £1,250/day",
+        "billed": "£1,150/day across 62 days in 2025",
+        "gap": 6200,
+        "status": "UNDER-BILLED",
+        "issue": "Billed at £1,150/day vs the £1,250/day rate card across 62 days."
+      },
+      {
+        "client": "Wexford Retail",
+        "contract_file": "Wexford Retail — SOW.pdf",
+        "billing_file": "Billing / invoices — 2025.xlsx",
+        "contract_terms": "Fixed-fee project",
+        "billed": "Matches SOW",
+        "gap": 0,
+        "status": "OK",
+        "issue": "Billing matches the SOW (note: the final milestone is disputed in AR, tracked separately)."
+      }
+    ]
+  },
+  "team": [
+    {
+      "name": "Sam Ortiz",
+      "role": "Head of Delivery"
+    },
+    {
+      "name": "Rina Patel",
+      "role": "Engagement Lead — Brightline"
+    },
+    {
+      "name": "Dev Shah",
+      "role": "Finance Lead"
+    }
+  ],
+  "account_owners": {
+    "Brightline Bank": "Rina Patel",
+    "Cairn Energy": "Sam Ortiz",
+    "Wexford Retail": "Sam Ortiz",
+    "Halcyon Health": "Sam Ortiz",
+    "Toll & Park": "Rina Patel"
+  },
+  "source_files": [
+    {
+      "id": "mgmt-accounts",
+      "name": "Management accounts — 2024-2025.xlsx",
+      "type": "spreadsheet",
+      "system": "Xero",
+      "updated": "2025-12",
+      "description": "Monthly P&L, balance sheet and cash."
+    },
+    {
+      "id": "billing",
+      "name": "Billing / invoices — 2025.xlsx",
+      "type": "spreadsheet",
+      "system": "Xero",
+      "updated": "2025-12",
+      "description": "Client invoices by project and month."
+    },
+    {
+      "id": "timesheets",
+      "name": "Timesheets & utilization — 2025.xlsx",
+      "type": "spreadsheet",
+      "system": "Harvest",
+      "updated": "2025-12",
+      "description": "Billable hours, day rates and utilization."
+    },
+    {
+      "id": "ar-aging",
+      "name": "AR aging — Dec 2025.xlsx",
+      "type": "spreadsheet",
+      "system": "Xero",
+      "updated": "2025-12",
+      "description": "Receivables by client and age bucket."
+    },
+    {
+      "id": "payroll",
+      "name": "Payroll summary — 2025.xlsx",
+      "type": "spreadsheet",
+      "system": "Gusto",
+      "updated": "2025-12",
+      "description": "Headcount and fully-loaded staff cost."
+    },
+    {
+      "id": "clients",
+      "name": "Client list & concentration — 2025.xlsx",
+      "type": "spreadsheet",
+      "system": "Internal",
+      "updated": "2025-12",
+      "description": "Billings by client and concentration."
+    },
+    {
+      "id": "bank",
+      "name": "Bank statements — 2025.pdf",
+      "type": "document",
+      "system": "Bank",
+      "updated": "2025-12",
+      "description": "Cash movements and balances."
+    },
+    {
+      "id": "brightline-sow",
+      "name": "Brightline Bank — SOW + CO2 (signed).pdf",
+      "type": "document",
+      "system": "DocuSign",
+      "updated": "2025-10",
+      "description": "Statement of work plus approved change order CO-2."
+    },
+    {
+      "id": "cairn-msa",
+      "name": "Cairn Energy — MSA + rate card.pdf",
+      "type": "document",
+      "system": "DocuSign",
+      "updated": "2024-08",
+      "description": "Master agreement and day-rate card."
+    },
+    {
+      "id": "wexford-sow",
+      "name": "Wexford Retail — SOW.pdf",
+      "type": "document",
+      "system": "DocuSign",
+      "updated": "2025-03",
+      "description": "Fixed-fee statement of work."
+    },
+    {
+      "id": "board-pack",
+      "name": "Board pack — Q4 2025.pdf",
+      "type": "document",
+      "system": "Internal",
+      "updated": "2025-12",
+      "description": "Quarterly board narrative and KPIs."
+    }
   ]
 }
