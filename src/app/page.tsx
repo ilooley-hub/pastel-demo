@@ -117,14 +117,21 @@ export default function Home() {
           />
         </section>
 
-        {/* Composer: chips + input */}
-        <section className="mb-8 space-y-5">
-          <QuestionChips groups={groups} onAsk={(q) => ask(q, true)} disabled={busy} />
+        {/* Composer: the free-form bar is the spotlight; chips support it for
+            people who don't yet know what to ask. */}
+        <section className="mb-8 space-y-6">
           <QuestionInput
             onAsk={(q) => ask(q, false)}
             disabled={busy}
-            placeholder={`Ask about ${company.name}'s numbers…`}
+            autoFocus
+            placeholder={`Ask anything about ${company.name}'s finances…`}
           />
+          <div className="space-y-3">
+            <p className="text-[13px] text-ink-3">
+              Type any question, or tap an example to get started:
+            </p>
+            <QuestionChips groups={groups} onAsk={(q) => ask(q, true)} disabled={busy} />
+          </div>
         </section>
 
         {/* Answer thread (newest at the bottom) */}
