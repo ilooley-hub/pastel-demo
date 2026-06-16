@@ -3,6 +3,8 @@
 // runtime so it works reliably on serverless (Vercel).
 
 import meridian from "../../../data/meridian.json";
+import harbor from "../../../data/harbor.json";
+import vantage from "../../../data/vantage.json";
 
 type Dataset = {
   meta: { id: string; name: string; sector: string; currency_symbol: string };
@@ -11,7 +13,8 @@ type Dataset = {
 
 const DATASETS: Record<string, Dataset> = {
   meridian: meridian as Dataset,
-  // Harbor & Co and Vantage Studio are added in Phase 5.
+  harbor: harbor as Dataset,
+  vantage: vantage as Dataset,
 };
 
 export function getDataset(companyId: string): Dataset | null {
