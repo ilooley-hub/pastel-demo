@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://getpastel.ai/demo",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "destination": "https://getpastel.ai/demo/:path*",
+      "permanent": true
+    }
+  ]
+}
