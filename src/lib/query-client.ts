@@ -1,3 +1,4 @@
+import { BASE_PATH } from "./base-path";
 import type { AnswerPayload } from "./types";
 
 /** Calls the server-side query engine. Throws an Error with a friendly message. */
@@ -5,7 +6,7 @@ export async function fetchAnswer(
   question: string,
   companyId: string
 ): Promise<AnswerPayload> {
-  const res = await fetch("/api/query", {
+  const res = await fetch(`${BASE_PATH}/api/query`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ question, companyId }),

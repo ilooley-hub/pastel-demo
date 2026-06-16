@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, Check, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
+import { BASE_PATH } from "@/lib/base-path";
 
 // Configurable booking link (set NEXT_PUBLIC_CALENDLY_URL at build time).
 const CALENDLY_URL =
@@ -70,7 +71,7 @@ export function LeadModal({
     };
 
     try {
-      const res = await fetch("/api/lead", {
+      const res = await fetch(`${BASE_PATH}/api/lead`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(payload),
