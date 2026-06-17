@@ -22,3 +22,17 @@ export const USE_THINKING = false;
  * are bounded and the figures are all present in the dataset.
  */
 export const EFFORT: "low" | "medium" | "high" | "max" = "low";
+
+/**
+ * Per-IP rate limits. This is a public demo on a paid API, so we cap both a
+ * short burst (per-minute) and total daily volume per IP. Tune here.
+ */
+export const QUERY_RATE = {
+  perMinute: 10,
+  perDay: 100,
+};
+/** Lead submissions are cheap but spammable — keep a light cap. */
+export const LEAD_RATE = {
+  perMinute: 5,
+  perDay: 30,
+};

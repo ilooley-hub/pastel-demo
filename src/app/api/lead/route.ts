@@ -3,8 +3,10 @@
 // webhook live in environment variables.
 
 import { NextResponse } from "next/server";
+import { LEAD_RATE } from "@/lib/config";
 import { insertLead, isDbConfigured, type LeadInput } from "@/lib/server/db";
 import { notifyTeam } from "@/lib/server/notify";
+import { clientIp, enforceRateLimit } from "@/lib/server/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -16,6 +18,17 @@ const clean = (v: unknown, max: number): string =>
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(req: Request) {
+  const rl = await enforceRateLimit(clientIp(req), [
+    { name: "lead-min", limit: LEAD_RATE.perMinute, windowSec: 60 },
+    { name: "lead-day", limit: LEAD_RATE.perDay, windowSec: 86400 },
+  ]);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many submissions — please try again in a minute." },
+      { status: 429, headers: { "retry-after": String(rl.retryAfterSec) } }
+    );
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await req.json();

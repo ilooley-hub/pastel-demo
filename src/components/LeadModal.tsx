@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X, Check, Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { BASE_PATH } from "@/lib/base-path";
+import { trackEvent } from "@/lib/analytics";
 
 // Configurable booking link (set NEXT_PUBLIC_CALENDLY_URL at build time).
 const CALENDLY_URL =
@@ -80,6 +81,10 @@ export function LeadModal({
       if (!res.ok) {
         throw new Error(data?.error || "Something went wrong. Please try again.");
       }
+      trackEvent("lead_submitted", {
+        company: companyViewed ?? "",
+        source: source ?? "",
+      });
       setSubmitted(true);
     } catch (err) {
       setError(

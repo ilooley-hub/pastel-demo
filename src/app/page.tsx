@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { COMPANIES, DEFAULT_COMPANY_ID, getCompany } from "@/lib/companies";
 import { getQuestionGroups } from "@/lib/sample-questions";
 import { fetchAnswer } from "@/lib/query-client";
+import { trackEvent } from "@/lib/analytics";
 import type { ThreadItem } from "@/lib/types";
 
 let idCounter = 0;
@@ -26,6 +27,7 @@ export default function Home() {
   const [softPromptDismissed, setSoftPromptDismissed] = useState(false);
 
   const openLead = useCallback((source: string) => {
+    trackEvent("cta_click", { source });
     setLeadSource(source);
     setLeadOpen(true);
   }, []);
@@ -48,6 +50,11 @@ export default function Home() {
   const ask = useCallback(
     async (question: string, fromChip = false) => {
       const id = nextId();
+      trackEvent("question_asked", {
+        source: fromChip ? "chip" : "typed",
+        company: companyId,
+        question: question.slice(0, 100),
+      });
       setThread((prev) => [
         ...prev,
         { id, question, status: "thinking", fromChip },
@@ -82,6 +89,7 @@ export default function Home() {
 
   function selectCompany(id: string) {
     if (id === companyId) return;
+    trackEvent("company_switch", { to: id });
     setCompanyId(id);
     setThread([]);
     setSoftPromptDismissed(false);

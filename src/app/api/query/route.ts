@@ -1,8 +1,15 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
-import { EFFORT, MAX_OUTPUT_TOKENS, QUERY_MODEL, USE_THINKING } from "@/lib/config";
+import {
+  EFFORT,
+  MAX_OUTPUT_TOKENS,
+  QUERY_MODEL,
+  QUERY_RATE,
+  USE_THINKING,
+} from "@/lib/config";
 import { getDataset } from "@/lib/server/datasets";
 import { buildSystemPrompt } from "@/lib/server/prompt";
+import { clientIp, enforceRateLimit } from "@/lib/server/rate-limit";
 import type { AnswerPayload } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -141,6 +148,21 @@ export async function POST(req: Request) {
     return NextResponse.json(
       { error: "That question is a bit long — please shorten it." },
       { status: 400 }
+    );
+  }
+
+  // Cap usage per IP to control cost/abuse on this public, paid-API demo.
+  const rl = await enforceRateLimit(clientIp(req), [
+    { name: "q-min", limit: QUERY_RATE.perMinute, windowSec: 60 },
+    { name: "q-day", limit: QUERY_RATE.perDay, windowSec: 86400 },
+  ]);
+  if (!rl.ok) {
+    return NextResponse.json(
+      {
+        error:
+          "You've reached the demo's question limit for now — give it a minute, then ask again. (It's a public demo running on a paid API.)",
+      },
+      { status: 429, headers: { "retry-after": String(rl.retryAfterSec) } }
     );
   }
 
