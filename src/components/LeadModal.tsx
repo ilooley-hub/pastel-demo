@@ -7,9 +7,10 @@ import { Button } from "./ui/button";
 import { BASE_PATH } from "@/lib/base-path";
 import { trackEvent } from "@/lib/analytics";
 
-// Configurable booking link (set NEXT_PUBLIC_CALENDLY_URL at build time).
-const CALENDLY_URL =
-  process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/";
+// Configurable booking link (set NEXT_PUBLIC_BOOKING_URL at build time).
+const BOOKING_URL =
+  process.env.NEXT_PUBLIC_BOOKING_URL ||
+  "https://calendar.app.google/Uj6ZjRTyjr5B1B8a6";
 
 type FieldProps = {
   label: string;
@@ -192,7 +193,7 @@ export function LeadModal({
                 <Button
                   size="lg"
                   className="mt-5 w-full"
-                  onClick={() => window.open(CALENDLY_URL, "_blank")}
+                  onClick={() => window.open(BOOKING_URL, "_blank", "noopener,noreferrer")}
                 >
                   Book a 20-minute walkthrough
                 </Button>
