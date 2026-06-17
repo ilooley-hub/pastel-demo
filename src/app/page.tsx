@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { COMPANIES, DEFAULT_COMPANY_ID, getCompany } from "@/lib/companies";
 import { getQuestionGroups } from "@/lib/sample-questions";
 import { fetchAnswer } from "@/lib/query-client";
+import { replayAnswer } from "@/lib/replay-client";
 import { trackEvent } from "@/lib/analytics";
 import type { ThreadItem } from "@/lib/types";
 
@@ -25,6 +26,18 @@ export default function Home() {
   const [leadOpen, setLeadOpen] = useState(false);
   const [leadSource, setLeadSource] = useState<string>("header");
   const [softPromptDismissed, setSoftPromptDismissed] = useState(false);
+
+  // Replay / demo-capture mode (?replay=1): render pre-captured answers instantly
+  // for recording, with an optional thinking-beat delay (?delay=ms).
+  const replayRef = useRef<{ on: boolean; delay: number }>({ on: false, delay: 800 });
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    const delay = Number(p.get("delay"));
+    replayRef.current = {
+      on: p.get("replay") === "1",
+      delay: Number.isFinite(delay) && delay >= 0 ? delay : 800,
+    };
+  }, []);
 
   const openLead = useCallback((source: string) => {
     trackEvent("cta_click", { source });
@@ -60,7 +73,10 @@ export default function Home() {
         { id, question, status: "thinking", fromChip },
       ]);
       try {
-        const answer = await fetchAnswer(question, companyId);
+        const { on, delay } = replayRef.current;
+        const answer = on
+          ? await replayAnswer(question, companyId, delay)
+          : await fetchAnswer(question, companyId);
         setThread((prev) =>
           prev.map((t) => (t.id === id ? { ...t, status: "done", answer } : t))
         );

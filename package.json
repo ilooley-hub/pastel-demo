@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "capture:replay": "node scripts/capture-replay.mjs",
+    "record:demo": "node scripts/record-demo.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.104.1",
